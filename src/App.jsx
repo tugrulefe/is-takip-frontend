@@ -102,6 +102,9 @@ function App() {
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
+    
+    // Base URL'i ayarla
+    axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
   }, []);
 
   const handleLogout = () => {
