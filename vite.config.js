@@ -2,14 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  plugins: [
-    react({
-      future: {
-        v7_startTransition: true,
-        v7_relativeSplatPath: true
-      }
-    })
-  ],
+  plugins: [react()],
   define: {
     'process.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || 'http://localhost:3001')
   },
@@ -26,9 +19,20 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
+    chunkSizeWarningLimit: 1600,
     rollupOptions: {
       output: {
-        manualChunks: undefined
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('@mui')) {
+              return 'mui';
+            }
+            if (id.includes('react')) {
+              return 'react';
+            }
+            return 'vendor';
+          }
+        }
       }
     }
   }
