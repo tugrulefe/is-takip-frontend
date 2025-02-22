@@ -13,7 +13,8 @@ import {
   CssBaseline,
   IconButton,
   Menu,
-  MenuItem
+  MenuItem,
+  CircularProgress
 } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import TodoJobs from './pages/TodoJobs';
@@ -95,6 +96,7 @@ function App() {
   const navigate = useNavigate();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Token'ı axios'un default headers'ına ekle
@@ -105,6 +107,9 @@ function App() {
     
     // Base URL'i ayarla
     axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+    
+    // Yükleme durumunu güncelle
+    setIsLoading(false);
   }, []);
 
   const handleLogout = () => {
@@ -122,6 +127,14 @@ function App() {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   // Kullanıcı giriş yapmamışsa sadece login sayfasını göster
   if (!user) {

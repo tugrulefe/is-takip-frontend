@@ -21,5 +21,15 @@ export default defineConfig({
         changeOrigin: true
       }
     }
+  },
+  base: '/',
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
   }
 }); 
